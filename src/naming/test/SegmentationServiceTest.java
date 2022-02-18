@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +14,7 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SegmentServiceTest {
+public class SegmentationServiceTest {
 
 	private String[] testData = new String[]
 			{"id,first,second,third,fourth",
@@ -58,13 +60,17 @@ public class SegmentServiceTest {
 		};
 	}
 
-	private void createFileWithTestData(int fileId) throws IOException {
-		File fileToCreate = new File(fileId + ".csv");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToCreate))) {
+	private void createFileWithTestData(int fileId) throws IOException, URISyntaxException {
+		String basePath = new File(
+				SegmentationService.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+						.getParent();
+		var filePath = Paths.get(basePath, fileId + ".csv").toString();
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 			for(String line : testData) {
 				writer.write(line);
 				writer.newLine();
 			}
+			writer.close();
 		}
 	}
 

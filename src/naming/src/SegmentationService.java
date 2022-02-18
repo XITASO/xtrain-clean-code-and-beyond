@@ -11,19 +11,41 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Service to read a part of a file.
+ */
 public class SegmentationService {
 
-	public InputStream GetSegmentData(int fid, long firstIndex, long lastIndex)
+	/**
+	 * Reads a segment of a file
+	 * @param fid the file id
+	 * @param x1 first line of the segment
+	 * @param x2 last line of the segment
+	 * @return a stream with all lines between x1 (including) and x2 (including)
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public InputStream GetSegmentData(int fid, long x1, long x2)
 			throws IOException, URISyntaxException {
-		return GetSegmentData(fid, firstIndex, lastIndex, 5000);
+		return GetSegmentData(fid, x1, x2, 5000);
 	}
 
+	/**
+	 * Reads a segment of a file
+	 * @param fid the file id
+	 * @param x1 first line of the segment
+	 * @param x2 last line of the segment
+	 * @param points number of points
+	 * @return a stream with all lines between x1 (including) and x2 (including)
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public InputStream GetSegmentData(int fid, long x1, long x2, long points)
 			throws IOException, URISyntaxException {
-		String filename;
+		String f;
 
 		try {
-			filename = getCsvFileName(fid);
+			f = getCsvFileName(fid);
 		} catch (Exception ex) {
 			throw new IllegalArgumentException("unknown file id");
 		}
@@ -49,24 +71,24 @@ public class SegmentationService {
 		}
 
 		long originalSegmentSize = (x2 - x1 + 1);
-		String outputFile;
+		String out;
 
 		if (x1 == 1 && x2 == fileLines && originalSegmentSize <= points) {
 			// take original file
-			outputFile = filename;
+			out = f;
 		} else {
-			String[] tmp = Paths.get(filename).getFileName().toString().split("\\.");
-			String extension = tmp[tmp.length - 1];
-			outputFile = Paths.get(filename).getParent().toString() + File.separator
-					+ Paths.get(filename).getFileName().toString().replaceFirst("[.][^.]+$", "") + "_"
-					+ points + "_" + x1 + "_" + x2 + "." + extension;
+			String[] tmp = Paths.get(f).getFileName().toString().split("\\.");
+			String ext = tmp[tmp.length - 1];
+			out = Paths.get(f).getParent().toString() + File.separator
+					+ Paths.get(f).getFileName().toString().replaceFirst("[.][^.]+$", "") + "_"
+					+ points + "_" + x1 + "_" + x2 + "." + ext;
 		}
 
-		if (!new File(outputFile).exists()) {
-			executeCopyProcess(points, x1, x2, filename, outputFile);
+		if (!new File(out).exists()) {
+			executeCopyProcess(points, x1, x2, f, out);
 		}
 
-		return Files.newInputStream(Paths.get(outputFile));
+		return Files.newInputStream(Paths.get(out));
 	}
 
 	private String getCsvFileName(int fileId) throws Exception {
@@ -98,8 +120,8 @@ public class SegmentationService {
 				} // else
 				outputWriter.flush();
 				outputWriter.close();
-			} // using outputWriter
-		} // using inputWriter
+			} // try outputWriter
+		} // try inputWriter
 	} // ExecuteCopyProcess
 
 	private static void CopyDownSampledSegment(BufferedReader inputReader, BufferedWriter outputWriter,
