@@ -13,10 +13,10 @@ import de.xitaso.taskman.model.Project;
 public class ProjectsController {
 
     @GetMapping("/projects")
-    public Collection<Project> hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public Project[] hello(@RequestParam(value = "name", defaultValue = "World") String name) {
         var result = new ArrayList<Project>(2);
         result.add(new Project("First"));
         result.add(new Project("Second"));
-        return result;
+        return result.toArray(new Project[result.size()]);
     }
 }

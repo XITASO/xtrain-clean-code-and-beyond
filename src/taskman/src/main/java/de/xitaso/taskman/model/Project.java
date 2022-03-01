@@ -4,13 +4,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Project {
     private String name;
     private String description;
     private LocalDate deadline;
     private Collection<Task> tasks = new ArrayList<Task>();
 
-    public Project(String name) {
+    @JsonCreator
+    public Project(@JsonProperty("name") String name) {
         this.name = name;
     }
 
