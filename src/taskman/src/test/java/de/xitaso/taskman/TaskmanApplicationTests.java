@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
+import de.xitaso.taskman.api.models.ProjectOverview;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class TaskmanApplicationTests {
@@ -36,7 +37,17 @@ class TaskmanApplicationTests {
     }
 
     @Test
-    void contextLoads() {
+    public void listProjects() {
+        var projectToCreate = new ProjectCreation("testProject", "Project description", LocalDate.of(2022, 3, 1));
+        this.restTemplate.postForLocation("/projects", projectToCreate);
+        this.restTemplate.postForLocation("/projects", projectToCreate);
+        this.restTemplate.postForLocation("/projects", projectToCreate);
+
+        var entity = this.restTemplate.getForEntity("/projects", ProjectOverview[].class);
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var projects = entity.getBody();
+
+        assertThat(projects.length).isEqualTo(3);
     }
 
 }

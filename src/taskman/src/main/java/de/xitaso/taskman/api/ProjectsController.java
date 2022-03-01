@@ -1,7 +1,7 @@
 package de.xitaso.taskman.api;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
+import de.xitaso.taskman.api.models.ProjectOverview;
 import de.xitaso.taskman.entities.Project;
 import de.xitaso.taskman.services.ProjectManagementService;
 
@@ -25,11 +25,11 @@ public class ProjectsController {
     public ProjectManagementService service;
 
     @GetMapping("/projects")
-    public Project[] hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        var result = new ArrayList<Project>(2);
-        result.add(new Project("First"));
-        result.add(new Project("Second"));
-        return result.toArray(new Project[result.size()]);
+    public ProjectOverview[] getAll() {
+        var result = StreamSupport.stream(service.findAll().spliterator(), false)
+                .map(p -> new ProjectOverview(0L, p.getName())).toArray(ProjectOverview[]::new);
+
+        return result;
     }
 
     @PostMapping("/projects")

@@ -19,4 +19,8 @@ public class ProjectManagementService {
     public Project findById(long id) {
         return repository.findOne(id);
     }
+
+    public Iterable<Project> findAll() {
+        return repository.findAll();
+    }
 }
