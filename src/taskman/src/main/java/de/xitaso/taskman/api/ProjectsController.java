@@ -1,13 +1,19 @@
 package de.xitaso.taskman.api;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import de.xitaso.taskman.model.Project;
+import de.xitaso.taskman.entities.Project;
 
 @RestController
 public class ProjectsController {
@@ -18,5 +24,17 @@ public class ProjectsController {
         result.add(new Project("First"));
         result.add(new Project("Second"));
         return result.toArray(new Project[result.size()]);
+    }
+
+    @PostMapping("/projects")
+    public ResponseEntity<Project> createProject(@RequestBody Project newProject) {
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/projects/{name}")
+                .buildAndExpand(newProject.getName())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

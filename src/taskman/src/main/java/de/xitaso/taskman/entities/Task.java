@@ -1,4 +1,4 @@
-package de.xitaso.taskman.model;
+package de.xitaso.taskman.entities;
 
 public class Task {
     private String description;

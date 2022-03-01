@@ -1,4 +1,4 @@
-package de.xitaso.taskman.model;
+package de.xitaso.taskman.entities;
 
 public class User {
     private String name;

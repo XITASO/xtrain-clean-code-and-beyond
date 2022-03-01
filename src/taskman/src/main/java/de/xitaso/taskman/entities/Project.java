@@ -1,4 +1,4 @@
-package de.xitaso.taskman.model;
+package de.xitaso.taskman.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
