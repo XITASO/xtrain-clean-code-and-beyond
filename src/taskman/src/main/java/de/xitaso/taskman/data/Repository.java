@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class Repository<T> {
     private Map<Long, T> repository = new HashMap<>();
 
@@ -16,8 +19,12 @@ public class Repository<T> {
         return id;
     }
 
-    public Optional<T> findOne(long id) {
-        return Optional.ofNullable(repository.get(id));
+    /**
+     * 
+     * @return The entity with the given id or null if it was not found.
+     */
+    public T findOne(long id) {
+        return repository.get(id);
     }
 
     public Iterable<T> findAll() {
@@ -33,7 +40,7 @@ public class Repository<T> {
     }
 
     private long getNextId() {
-        var highestId = repository.keySet().stream().max(Long::compare);
+        var highestId = repository.size() > 0 ? repository.keySet().stream().max(Long::compare) : Optional.of(0L);
         return highestId.get() + 1L;
     }
 

@@ -3,25 +3,31 @@ package de.xitaso.taskman.api.models;
 import java.time.LocalDate;
 
 public class ProjectDetails {
-    private String name;
-    private String description;
     private LocalDate deadline;
+    private String description;
+    private long id;
+    private String name;
 
-    public ProjectDetails(String name, String description, LocalDate deadline) {
+    public ProjectDetails(long id, String name, String description, LocalDate deadline) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
     }
 
-    public String getName() {
-        return name;
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public LocalDate getDeadline() {
-        return deadline;
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

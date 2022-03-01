@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
-import de.xitaso.taskman.entities.Project;
+import de.xitaso.taskman.api.models.ProjectCreation;
+import de.xitaso.taskman.api.models.ProjectDetails;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class TaskmanApplicationTests {
@@ -21,18 +22,17 @@ class TaskmanApplicationTests {
 
     @Test
     public void createProject() {
-        var projectToCreate = new Project("testProject");
-        projectToCreate.setDeadline(LocalDate.of(2022, 3, 1));
-        projectToCreate.setDescription("Project description");
+        var projectToCreate = new ProjectCreation("testProject", "Project description", LocalDate.of(2022, 3, 1));
 
         var location = this.restTemplate.postForLocation("/projects", projectToCreate);
 
-        var projectFromApi = this.restTemplate.getForObject(location, Project.class);
+        var entity = this.restTemplate.getForEntity(location, ProjectDetails.class);
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var projectFromApi = entity.getBody();
 
         assertThat(projectFromApi.getName()).isEqualTo(projectToCreate.getName());
         assertThat(projectFromApi.getDescription()).isEqualTo(projectToCreate.getDescription());
         assertThat(projectFromApi.getDeadline()).isEqualTo(projectToCreate.getDeadline());
-        assertThat(projectFromApi.getTasks()).isEmpty();
     }
 
     @Test
