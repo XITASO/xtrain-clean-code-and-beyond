@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.entities.Project;
 
 @RestController
@@ -27,7 +28,7 @@ public class ProjectsController {
     }
 
     @PostMapping("/projects")
-    public ResponseEntity<Project> createProject(@RequestBody Project newProject) {
+    public ResponseEntity<ProjectDetails> createProject(@RequestBody ProjectCreation newProject) {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
