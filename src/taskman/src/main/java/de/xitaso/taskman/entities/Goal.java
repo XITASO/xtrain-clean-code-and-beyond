@@ -1,6 +1,8 @@
 package de.xitaso.taskman.entities;
 
-public class Goal {
+import de.xitaso.taskman.data.EntityBase;
+
+public class Goal extends EntityBase {
     private String description;
 
     public Goal(String description) {

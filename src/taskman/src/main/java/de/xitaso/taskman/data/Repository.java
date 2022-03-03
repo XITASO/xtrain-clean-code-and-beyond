@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Repository<T> {
+public class Repository<T extends EntityBase> {
     private Map<Long, T> repository = new HashMap<>();
 
     /**
@@ -15,8 +15,13 @@ public class Repository<T> {
      */
     public synchronized long save(T entity) {
         var id = getNextId();
+        entity.setID(id);
         repository.put(id, entity);
         return id;
+    }
+
+    public synchronized void update(T entity) {
+        repository.put(entity.getID(), entity);
     }
 
     /**

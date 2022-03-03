@@ -1,6 +1,8 @@
 package de.xitaso.taskman.entities;
 
-public class Task {
+import de.xitaso.taskman.data.EntityBase;
+
+public class Task extends EntityBase {
     private String description;
     private TaskState state;
     private User assignee;

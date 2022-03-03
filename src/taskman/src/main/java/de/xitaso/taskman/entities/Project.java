@@ -7,7 +7,9 @@ import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Project {
+import de.xitaso.taskman.data.EntityBase;
+
+public class Project extends EntityBase {
     private String name;
     private String description;
     private LocalDate deadline;

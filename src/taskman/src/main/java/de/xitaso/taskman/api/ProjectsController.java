@@ -27,7 +27,7 @@ public class ProjectsController {
     @GetMapping("/projects")
     public ProjectOverview[] getAll() {
         var result = StreamSupport.stream(service.findAll().spliterator(), false)
-                .map(p -> new ProjectOverview(0L, p.getName())).toArray(ProjectOverview[]::new);
+                .map(p -> new ProjectOverview(p.getID(), p.getName())).toArray(ProjectOverview[]::new);
 
         return result;
     }

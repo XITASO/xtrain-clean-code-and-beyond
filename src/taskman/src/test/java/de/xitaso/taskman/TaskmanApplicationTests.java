@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
 import de.xitaso.taskman.api.models.ProjectOverview;
+import de.xitaso.taskman.api.models.TaskCreation;
+import de.xitaso.taskman.api.models.TaskDetails;
+import de.xitaso.taskman.entities.TaskState;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class TaskmanApplicationTests {
@@ -48,6 +51,22 @@ class TaskmanApplicationTests {
         var projects = entity.getBody();
 
         assertThat(projects.length).isEqualTo(3);
+    }
+
+    @Test
+    public void addTaskToProject() {
+        var projectToCreate = new ProjectCreation("testProject", "Project description", LocalDate.of(2022, 3, 1));
+        var projectLocation = this.restTemplate.postForLocation("/projects", projectToCreate);
+
+        var taskToCreate = new TaskCreation("My test task");
+        var taskLocation = this.restTemplate.postForLocation(projectLocation.toString() + "/tasks", taskToCreate);
+
+        var taskEntity = this.restTemplate.getForEntity(taskLocation, TaskDetails.class);
+        assertThat(taskEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var task = taskEntity.getBody();
+
+        assertThat(task.getDescription()).isEqualTo(taskToCreate.getDescription());
+        assertThat(task.getState()).isEqualTo(TaskState.ToDo);
     }
 
 }

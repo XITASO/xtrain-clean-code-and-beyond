@@ -1,6 +1,8 @@
 package de.xitaso.taskman.entities;
 
-public class User {
+import de.xitaso.taskman.data.EntityBase;
+
+public class User extends EntityBase {
     private String name;
 
     public User(String name) {
