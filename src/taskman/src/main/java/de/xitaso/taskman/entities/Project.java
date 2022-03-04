@@ -19,19 +19,16 @@ public class Project extends EntityBase {
 
     public synchronized void addTask(Task task) {
         this.taskIds.add(task.getID());
+        task.setProjectID(this.getID());
     }
 
     public void removeTask(Task task) {
         this.taskIds.remove(task.getID());
+        task.setProjectID(null);
     }
 
     public Collection<Long> getTaskIds() {
         return taskIds;
-    }
-
-    public void replaceTaskIds(Long[] taskIds) {
-        this.taskIds.clear();
-        this.taskIds.addAll(this.taskIds);
     }
 
     public LocalDate getDeadline() {

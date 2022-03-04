@@ -17,6 +17,7 @@ import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
 import de.xitaso.taskman.api.models.ProjectOverview;
 import de.xitaso.taskman.api.models.ProjectUpdate;
+import de.xitaso.taskman.data.TaskRepository;
 import de.xitaso.taskman.entities.Project;
 import de.xitaso.taskman.services.ProjectManagementService;
 
@@ -25,6 +26,9 @@ public class ProjectsController {
 
     @Autowired
     public ProjectManagementService service;
+
+    @Autowired
+    public TaskRepository tasksRepository;
 
     @GetMapping("/projects")
     public ResponseEntity<ProjectOverview[]> getAll() {
@@ -67,7 +71,20 @@ public class ProjectsController {
 
         project.setDeadline(updateData.getDeadline());
         project.setDescription(updateData.getDescription());
-        project.replaceTaskIds(updateData.getTaskIds());
+
+        for (int i = 0; i < updateData.getTaskIds().length; i++) {
+            var task = tasksRepository.findOne(updateData.getTaskIds()[i]);
+            if (task == null) {
+                return ResponseEntity.notFound().build();
+            }
+            try {
+                project.addTask(task);
+            } catch (Exception ex) {
+                var otherProject = service.findById(task.getProjectID());
+                otherProject.removeTask(task);
+                project.addTask(task);
+            }
+        }
 
         service.update(project);
         return ResponseEntity.ok().build();

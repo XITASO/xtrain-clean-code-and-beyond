@@ -89,6 +89,14 @@ class TaskmanApplicationTests {
         var projectLocation = this.restTemplate.postForLocation("/projects", projectToCreate);
         var projectDetails = this.restTemplate.getForObject(projectLocation, ProjectDetails.class);
 
+        var projectUpdate = new ProjectUpdate(projectDetails.getDescription(), projectDetails.getDeadline(),
+                new Long[] { task.getID() });
+        this.restTemplate.put(projectLocation, projectUpdate);
+
+        var updatedProjectDetails = this.restTemplate.getForObject(projectLocation, ProjectDetails.class);
+
+        assertThat(updatedProjectDetails.getTaskIds().length).isEqualTo(1);
+        assertThat(updatedProjectDetails.getTaskIds()[0]).isEqualTo(task.getID());
     }
 
 }
