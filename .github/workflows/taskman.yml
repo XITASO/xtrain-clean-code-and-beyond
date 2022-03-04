@@ -4,9 +4,12 @@
 name: Java CI with Maven
 
 on:
+  workflow_dispatch:
   push:
     paths: 
     - 'src/taskman/**'
+    - '.github/workflows/taskman.yml'
+  
 
 jobs:
   build:
@@ -23,5 +26,5 @@ jobs:
         cache: maven
     - name: run tests
       working-directory: src/taskman
-      run: mvnw test
+      run: mvn --batch-mode --update-snapshots verify
 
