@@ -6,7 +6,7 @@ name: Java CI with Maven
 on:
   push:
     paths: 
-    - 'src/taskman/'
+    - 'src/taskman/**'
 
 jobs:
   build:
