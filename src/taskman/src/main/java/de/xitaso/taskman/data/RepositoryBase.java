@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
-@Service
-public class Repository<T extends EntityBase> {
+public abstract class RepositoryBase<T extends EntityBase> {
     private Map<Long, T> repository = new HashMap<>();
 
     /**

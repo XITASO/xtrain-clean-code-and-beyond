@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,11 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
 import de.xitaso.taskman.api.models.ProjectOverview;
-import de.xitaso.taskman.api.models.TaskCreation;
-import de.xitaso.taskman.api.models.TaskDetails;
-import de.xitaso.taskman.data.Repository;
+import de.xitaso.taskman.api.models.ProjectUpdate;
 import de.xitaso.taskman.entities.Project;
-import de.xitaso.taskman.entities.Task;
 import de.xitaso.taskman.services.ProjectManagementService;
 
 @RestController
@@ -27,15 +25,13 @@ public class ProjectsController {
 
     @Autowired
     public ProjectManagementService service;
-    @Autowired
-    public Repository<Task> tasksRepository;
 
     @GetMapping("/projects")
-    public ProjectOverview[] getAll() {
+    public ResponseEntity<ProjectOverview[]> getAll() {
         var result = StreamSupport.stream(service.findAll().spliterator(), false)
                 .map(p -> new ProjectOverview(p.getID(), p.getName())).toArray(ProjectOverview[]::new);
 
-        return result;
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/projects")
@@ -57,21 +53,23 @@ public class ProjectsController {
             return ResponseEntity.notFound().build();
         }
 
-        var result = new ProjectDetails(id, project.getName(), project.getDescription(), project.getDeadline());
+        var result = new ProjectDetails(id, project.getName(), project.getDescription(), project.getDeadline(),
+                project.getTaskIds().toArray(new Long[0]));
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/projects/{id}/tasks")
-    public ResponseEntity<TaskDetails> addTaskToProject(@PathVariable long id, @RequestBody TaskCreation newTask) {
-        var task = new Task(newTask.getDescription());
-        tasksRepository.save(task);
-
+    @PutMapping("/projects/{id}")
+    public ResponseEntity<ProjectUpdate> updateProject(@PathVariable long id, @RequestBody ProjectUpdate updateData) {
         var project = service.findById(id);
-        project.addTask(task);
+        if (project == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(task.getID())
-                .toUri();
+        project.setDeadline(updateData.getDeadline());
+        project.setDescription(updateData.getDescription());
+        project.replaceTaskIds(updateData.getTaskIds());
 
-        return ResponseEntity.created(location).build();
+        service.update(project);
+        return ResponseEntity.ok().build();
     }
 }

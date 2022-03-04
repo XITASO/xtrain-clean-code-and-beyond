@@ -4,33 +4,34 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import de.xitaso.taskman.data.EntityBase;
 
 public class Project extends EntityBase {
     private String name;
     private String description;
     private LocalDate deadline;
-    private Collection<Task> tasks = new ArrayList<Task>();
-    private long nextTaskId;
 
-    @JsonCreator
-    public Project(@JsonProperty("name") String name) {
+    private Collection<Long> taskIds = new ArrayList<>();
+
+    public Project(String name) {
         this.name = name;
     }
 
     public synchronized void addTask(Task task) {
-        this.tasks.add(task);
+        this.taskIds.add(task.getID());
     }
 
     public void removeTask(Task task) {
-        this.tasks.remove(task);
+        this.taskIds.remove(task.getID());
     }
 
-    public Collection<Task> getTasks() {
-        return tasks;
+    public Collection<Long> getTaskIds() {
+        return taskIds;
+    }
+
+    public void replaceTaskIds(Long[] taskIds) {
+        this.taskIds.clear();
+        this.taskIds.addAll(this.taskIds);
     }
 
     public LocalDate getDeadline() {
