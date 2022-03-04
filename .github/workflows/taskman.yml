@@ -8,7 +8,7 @@ on:
   push:
     paths: 
     - 'src/taskman/**'
-    - '.github/workflows/taskman.yaml'
+    - '.github/workflows/taskman.yml'
   
 
 jobs:
