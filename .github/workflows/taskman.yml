@@ -4,10 +4,12 @@
 name: Java CI with Maven
 
 on:
+  workflow_dispatch:
   push:
     paths: 
     - 'src/taskman/**'
     - '.github/workflows/taskman.yaml'
+  
 
 jobs:
   build:
