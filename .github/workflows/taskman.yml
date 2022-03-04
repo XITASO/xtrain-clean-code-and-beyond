@@ -26,5 +26,5 @@ jobs:
         cache: maven
     - name: run tests
       working-directory: src/taskman
-      run: ./mvnw test
+      run: mvn --batch-mode --update-snapshots verify
 
