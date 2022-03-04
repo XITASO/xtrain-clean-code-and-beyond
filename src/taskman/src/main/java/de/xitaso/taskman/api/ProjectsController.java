@@ -15,7 +15,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import de.xitaso.taskman.api.models.ProjectCreation;
 import de.xitaso.taskman.api.models.ProjectDetails;
 import de.xitaso.taskman.api.models.ProjectOverview;
+import de.xitaso.taskman.api.models.TaskCreation;
+import de.xitaso.taskman.api.models.TaskDetails;
+import de.xitaso.taskman.data.Repository;
 import de.xitaso.taskman.entities.Project;
+import de.xitaso.taskman.entities.Task;
 import de.xitaso.taskman.services.ProjectManagementService;
 
 @RestController
@@ -23,6 +27,8 @@ public class ProjectsController {
 
     @Autowired
     public ProjectManagementService service;
+    @Autowired
+    public Repository<Task> tasksRepository;
 
     @GetMapping("/projects")
     public ProjectOverview[] getAll() {
@@ -34,7 +40,6 @@ public class ProjectsController {
 
     @PostMapping("/projects")
     public ResponseEntity<ProjectDetails> createProject(@RequestBody ProjectCreation newProject) {
-
         var project = new Project(newProject.getName());
         project.setDescription(newProject.getDescription());
         project.setDeadline(newProject.getDeadline());
@@ -54,5 +59,19 @@ public class ProjectsController {
 
         var result = new ProjectDetails(id, project.getName(), project.getDescription(), project.getDeadline());
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/projects/{id}/tasks")
+    public ResponseEntity<TaskDetails> addTaskToProject(@PathVariable long id, @RequestBody TaskCreation newTask) {
+        var task = new Task(newTask.getDescription());
+        tasksRepository.save(task);
+
+        var project = service.findById(id);
+        project.addTask(task);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(task.getID())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

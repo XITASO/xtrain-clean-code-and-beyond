@@ -59,7 +59,11 @@ class TaskmanApplicationTests {
         var projectLocation = this.restTemplate.postForLocation("/projects", projectToCreate);
 
         var taskToCreate = new TaskCreation("My test task");
-        var taskLocation = this.restTemplate.postForLocation(projectLocation.toString() + "/tasks", taskToCreate);
+//        var taskLocation = this.restTemplate.postForLocation(projectLocation.toString() + "/tasks", taskToCreate);
+        var response = this.restTemplate.postForEntity(projectLocation.toString() + "/tasks", taskToCreate,
+                Object.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        var taskLocation = response.getHeaders().getLocation();
 
         var taskEntity = this.restTemplate.getForEntity(taskLocation, TaskDetails.class);
         assertThat(taskEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

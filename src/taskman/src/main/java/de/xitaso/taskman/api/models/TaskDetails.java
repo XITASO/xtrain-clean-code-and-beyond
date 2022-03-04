@@ -5,10 +5,16 @@ import de.xitaso.taskman.entities.TaskState;
 public class TaskDetails {
     private String description;
     private TaskState state;
+    private long id;
 
-    public TaskDetails(TaskState state, String description) {
+    public TaskDetails(long id, TaskState state, String description) {
+        this.id = id;
         this.state = state;
         this.description = description;
+    }
+
+    public long getID() {
+        return id;
     }
 
     public String getDescription() {

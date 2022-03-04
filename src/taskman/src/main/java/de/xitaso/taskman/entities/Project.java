@@ -14,13 +14,14 @@ public class Project extends EntityBase {
     private String description;
     private LocalDate deadline;
     private Collection<Task> tasks = new ArrayList<Task>();
+    private long nextTaskId;
 
     @JsonCreator
     public Project(@JsonProperty("name") String name) {
         this.name = name;
     }
 
-    public void addTask(Task task) {
+    public synchronized void addTask(Task task) {
         this.tasks.add(task);
     }
 
