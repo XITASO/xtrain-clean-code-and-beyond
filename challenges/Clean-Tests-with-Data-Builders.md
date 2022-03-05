@@ -28,7 +28,7 @@ pattern](https://en.wikipedia.org/wiki/Builder_pattern) to create required test
 data. A Test Data Builder provides an abstraction so that the required
 boilerplate in the test is reduced to a minimum and the builder provides a
 readable fluent interface in the language of the business-domain to create the
-required objects. For more details, see this (tutorial)[https://www.arhohuttunen.com/test-data-builders/#-make-construction-easier-with-the-builder-pattern].
+required objects. For more details, see this [tutorial](https://www.arhohuttunen.com/test-data-builders/#-make-construction-easier-with-the-builder-pattern).
 
 Our [taskman](../src/taskman/) sample app already creates an abstract
 [DataBuilder](../src/taskman/src/test/java/de/xitaso/taskman/databuilders/DataBuilder.java)
