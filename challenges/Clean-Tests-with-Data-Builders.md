@@ -19,7 +19,7 @@ set to done and hence the goal shall not be identified as critical.
 
 https://github.com/XITASO/xtrain-clean-code-and-beyond/blob/bfeb5d52fdca5651eb1cf1d90aed2eb32032c236/src/taskman/src/test/java/de/xitaso/taskman/unit/GoalServiceTests.java#L80-L114
 
-[^1] Depending on the test-scope this can be a class, a module or a whole system.
+[^1]: Depending on the test-scope this can be a class, a module or a whole system.
 
 ## Test Data Builders to the rescue :bulb:
 
