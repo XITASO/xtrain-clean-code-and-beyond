@@ -11,7 +11,7 @@ public class Goal extends EntityBase {
     public String description;
     public LocalDate deadline;
     public User responsiblePerson;
-    public Collection<Project> projects = new ArrayList();
+    public Collection<Project> projects = new ArrayList<>();
 
     public String getTitle() {
         return title;
