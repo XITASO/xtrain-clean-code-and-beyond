@@ -1,6 +1,7 @@
 package de.xitaso.taskman.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.xitaso.taskman.data.EntityBase;
@@ -10,7 +11,7 @@ public class Goal extends EntityBase {
     public String description;
     public LocalDate deadline;
     public User responsiblePerson;
-    public Collection<Project> projects;
+    public Collection<Project> projects = new ArrayList();
 
     public String getTitle() {
         return title;
@@ -48,7 +49,11 @@ public class Goal extends EntityBase {
         return projects;
     }
 
-    public void setProjects(Collection<Project> projects) {
-        this.projects = projects;
+    public void addProject(Project project) {
+        projects.add(project);
+    }
+
+    public boolean removeProject(Project project) {
+        return projects.remove(project);
     }
 }
