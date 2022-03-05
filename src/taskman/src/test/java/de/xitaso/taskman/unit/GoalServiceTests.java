@@ -19,6 +19,7 @@ public class GoalServiceTests {
 
     @Test
     public void returnsCriticalGoal_whenRepsoniblePersonIsInMunich() {
+        // Arrange
         var userOfNonCriticalGoal = new User();
         userOfNonCriticalGoal.setName("Hans");
         userOfNonCriticalGoal.setAddress(new AddressBuilder().build());
@@ -32,13 +33,17 @@ public class GoalServiceTests {
         criticalGoal.setResponsiblePerson(userOfCriticalGoal);
 
         var systemUnderTest = new GoalPriorizationService(new TaskRepository());
+
+        // Act
         var result = systemUnderTest.findCriticalGoals(List.of(nonCriticalGoal, criticalGoal));
 
+        // Assert
         assertThat(result).containsExactly(criticalGoal);
     }
 
     @Test
     public void returnsCriticalGoal_whenNumberOfOpenTasksIsMoreThan50() {
+        // Arrange
         var user = new User();
         user.setAddress(new AddressBuilder().build());
         var nonCriticalGoal = new Goal();
@@ -64,13 +69,17 @@ public class GoalServiceTests {
         criticalGoal.addProject(project2);
 
         var systemUnderTest = new GoalPriorizationService(taskrepository);
+
+        // Act
         var result = systemUnderTest.findCriticalGoals(List.of(nonCriticalGoal, criticalGoal));
 
+        // Assert
         assertThat(result).containsExactly(criticalGoal);
     }
 
     @Test
     public void returnsEmptyCollection_whenThereIsNoCriticalGoal() {
+        // Arrange
         var user = new User();
         user.setAddress(new AddressBuilder().build());
         var nonCriticalGoal = new Goal();
@@ -82,7 +91,6 @@ public class GoalServiceTests {
         var project1 = new Project("Project 1");
         for (int i = 0; i < 25; i++) {
             var task = new Task("task " + i);
-            task.setState(TaskState.Done);
             taskrepository.save(task);
             project1.addTask(task);
         }
@@ -94,10 +102,14 @@ public class GoalServiceTests {
         }
         criticalGoal.addProject(project1);
         criticalGoal.addProject(project2);
+        taskrepository.findOne(1).setState(TaskState.Done);
 
         var systemUnderTest = new GoalPriorizationService(taskrepository);
+
+        // Act
         var result = systemUnderTest.findCriticalGoals(List.of(nonCriticalGoal, criticalGoal));
 
+        // Assert
         assertThat(result).isEmpty();
     }
 
