@@ -8,12 +8,12 @@ public abstract class DataBuilder<TEntity, TBuilder extends DataBuilder<TEntity,
 
     private final List<Consumer<TEntity>> configurations = new ArrayList<>();
 
-    public TBuilder With(Consumer<TEntity> applyConfig) {
+    public TBuilder with(Consumer<TEntity> applyConfig) {
         configurations.add(applyConfig);
         return (TBuilder) this;
     }
 
-    public TEntity Build() {
+    public TEntity build() {
         var instance = createInstance();
         configurations.forEach(applyConfig -> applyConfig.accept(instance));
         return instance;

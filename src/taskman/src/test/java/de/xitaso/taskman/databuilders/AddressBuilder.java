@@ -4,8 +4,8 @@ import de.xitaso.taskman.entities.Address;
 
 public class AddressBuilder extends DataBuilder<Address, AddressBuilder> {
 
-    public AddressBuilder InMunich() {
-        return With(a -> a.setCity("Munich"));
+    public AddressBuilder inMunich() {
+        return with(a -> a.setCity("Munich"));
     }
 
     @Override
