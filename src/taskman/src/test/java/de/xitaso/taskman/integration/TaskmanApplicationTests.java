@@ -1,4 +1,4 @@
-package de.xitaso.taskman;
+package de.xitaso.taskman.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package de.xitaso.taskman;
+package de.xitaso.taskman.integration;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
