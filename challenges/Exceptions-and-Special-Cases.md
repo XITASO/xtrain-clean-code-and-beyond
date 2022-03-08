@@ -31,6 +31,9 @@ difficult to understand and error prone.
 - Try to define all of the special cases out of existense!
 - Your solution should no longer need any `if` or `try...catch` statement
 
+### Hint 🤓
+You can return an [Optional<T>](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html) instead of `null` to avoid null-checks. See [this tutorial](https://www.baeldung.com/java-optional) on how to use it.
+
 [^1]:
     Ding Yuan et. al., "Simple Testing Can Prevent Most Critical Failures: An
     Analysis of Production Failures in Distributed Data-Intensive Systems," 2014
