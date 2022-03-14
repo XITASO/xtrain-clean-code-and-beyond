@@ -12,10 +12,20 @@ public class Task extends EntityBase {
         this.setState(TaskState.ToDo);
     }
 
+    /**
+     * Gets the state
+     * 
+     * @return The state
+     */
     public TaskState getState() {
         return state;
     }
 
+    /**
+     * Sets the state
+     * 
+     * @param state - The state
+     */
     public void setState(TaskState state) {
         this.state = state;
     }

@@ -25,5 +25,11 @@ public class ProjectManagementService {
     }
 
     public void update(Project details) {
+        // TODO clarify if we need to check of existing ID
+//        var actual = dataStore.findOne(details.getID());
+//        if (actual == null) {
+//            throw new UnsupportedOperationException();
+//        }
+        repository.update(details);
     }
 }
