@@ -35,6 +35,11 @@ public class Project extends EntityBase {
         return deadline;
     }
 
+    /**
+     * The Project End date describes the date when the project has to be finished.
+     * 
+     * @param endDate - date when the project should be finished
+     */
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
