@@ -52,23 +52,20 @@ public class ProjectsController {
 
     @GetMapping("/projects/{id}")
     public ResponseEntity<ProjectDetails> getProject(@PathVariable long id) {
-        var project = service.findById(id);
-        if (project == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        var result = new ProjectDetails(id, project.getName(), project.getDescription(), project.getDeadline(),
-                project.getTaskIds().toArray(new Long[0]));
-        return ResponseEntity.ok(result);
+        return service.findById(id)
+                .map(project -> new ProjectDetails(id, project.getName(), project.getDescription(),
+                        project.getDeadline(), project.getTaskIds().toArray(new Long[0])))
+                .map(projectDetails -> ResponseEntity.ok(projectDetails)).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/projects/{id}")
     public ResponseEntity<ProjectUpdate> updateProject(@PathVariable long id, @RequestBody ProjectUpdate updateData) {
-        var project = service.findById(id);
-        if (project == null) {
+        var projectQuery = service.findById(id);
+        if (projectQuery.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
+        var project = projectQuery.get();
         project.setDeadline(updateData.getDeadline());
         project.setDescription(updateData.getDescription());
 
@@ -77,7 +74,7 @@ public class ProjectsController {
             try {
                 project.addTask(task);
             } catch (Exception ex) {
-                var otherProject = service.findById(task.getProjectID());
+                var otherProject = service.findById(task.getProjectID()).get();
                 otherProject.removeTask(task);
                 project.addTask(task);
             }

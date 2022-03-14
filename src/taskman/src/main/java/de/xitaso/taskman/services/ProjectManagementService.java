@@ -1,5 +1,7 @@
 package de.xitaso.taskman.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class ProjectManagementService {
         return repository.save(project);
     }
 
-    public Project findById(long id) {
-        return repository.findOne(id);
+    public Optional<Project> findById(long id) {
+        return Optional.ofNullable(repository.findOne(id));
     }
 
     public Iterable<Project> findAll() {
