@@ -19,6 +19,7 @@ import de.xitaso.taskman.api.models.ProjectOverview;
 import de.xitaso.taskman.api.models.ProjectUpdate;
 import de.xitaso.taskman.data.TaskRepository;
 import de.xitaso.taskman.entities.Project;
+import de.xitaso.taskman.entities.Task;
 import de.xitaso.taskman.services.ProjectManagementService;
 
 @RestController
@@ -71,16 +72,17 @@ public class ProjectsController {
 
         for (int i = 0; i < updateData.getTaskIds().length; i++) {
             var task = tasksRepository.findOne(updateData.getTaskIds()[i]);
-            try {
-                project.addTask(task);
-            } catch (Exception ex) {
-                var otherProject = service.findById(task.getProjectID()).get();
-                otherProject.removeTask(task);
-                project.addTask(task);
-            }
+            unassign(task);
+            project.addTask(task);
         }
 
         service.update(project);
         return ResponseEntity.ok().build();
+    }
+
+    private void unassign(Task task) {
+        if (task.getProjectID() != null) {
+            service.findById(task.getProjectID()).ifPresent(project -> project.removeTask(task));
+        }
     }
 }
