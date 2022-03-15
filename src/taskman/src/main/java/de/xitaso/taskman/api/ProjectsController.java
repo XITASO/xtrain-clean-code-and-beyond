@@ -74,9 +74,6 @@ public class ProjectsController {
 
         for (int i = 0; i < updateData.getTaskIds().length; i++) {
             var task = tasksRepository.findOne(updateData.getTaskIds()[i]);
-            if (task == null) {
-                return ResponseEntity.notFound().build();
-            }
             try {
                 project.addTask(task);
             } catch (Exception ex) {
