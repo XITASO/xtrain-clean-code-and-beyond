@@ -39,7 +39,7 @@ public class Task extends EntityBase {
     }
 
     public void setProjectID(Long projectId) {
-        if (this.projectId != null) {
+        if (this.projectId != null && projectId != null) {
             throw new UnsupportedOperationException(
                     "Task is already assigned to a drifferent project! You must unassign it first.");
         }
