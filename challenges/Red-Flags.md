@@ -1,5 +1,7 @@
 # Red Flags
 
+from J. Ousterhoud, "A Philosophy of Software Design", 2nd e.d, Palo Alto, CA: Yaknyam Press, 2021
+
 ## Shallow Module
 The interface for a class or method isn't much simpler than its implementation.
 
