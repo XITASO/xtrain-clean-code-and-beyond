@@ -199,7 +199,22 @@ private static String[] getNormalizedResourceName(HTTPRequest req) {
 ## Implementation Documentation Contaminates Interface
 An interface comment describes implementation details not needed by users of the thing being documented.
 
-> Don't overload the user of the api with unnecessary information.
+<details>
+<summary>Example</summary>
+
+```cs
+    public interface TaskRepository
+    {
+        // Does a SELECT * FROM Tasks WHERE ID = {id} query
+        Task findById(Guid id);
+
+        // Deletes a task from the Azure SQL-DB
+        void Delete(Task toDelete);
+    }
+```
+</details>
+
+> Do not overload the user of the api with unnecessary information.
 
 
 ## Vague Name
