@@ -187,6 +187,10 @@ All of the information in a comment is immediately obvious from the code next to
  * Obtain a normalized resource name from REQ.
  */
 private static String[] getNormalizedResourceName(HTTPRequest req) {
+    // Return if Request was null
+    if (req == null) {
+        return
+    }
     // ...
 }
 ```
