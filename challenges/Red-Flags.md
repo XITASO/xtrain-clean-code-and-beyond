@@ -126,6 +126,7 @@ This red flag occures when a general-purpose mechanism also contains code specia
 
 <details>
 <summary>Example</summary>
+Here, a special `NetWorkErrorLogger` has been introduced to log error messages on an RPC-connection. This special logger does not provide any value but complicates logging. It's also a good example for the red flag "Shallow Module".
 
 ```java
 public static class NetworkErrorLogger {
@@ -146,7 +147,7 @@ public static class NetworkErrorLogger {
 
 
 ## Conjoined Method
-It should be possible to understand each method independently. If you can't understand the implementation of one method without also understanding the implementation of another, that's a red flag. This red flag can occur in other contexts as well: if two pieces of code are physicallyy separated, but each can only be understood by looking at the other, that is a red flag.
+It should be possible to understand each method independently. If you can't understand the implementation of one method without also understanding the implementation of another, that's a red flag. This red flag can occur in other contexts as well: if two pieces of code are physically separated, but each can only be understood by looking at the other, that is a red flag.
 
 <details>
 <summary>Example</summary>
