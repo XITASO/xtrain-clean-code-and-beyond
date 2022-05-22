@@ -40,7 +40,7 @@ public class CsvReader {
 
 public class CsvWriter {
     public void write(MyDataClass content) {
-        // write member m to column n 
+        // write member m to column n
     }
 }
 
@@ -64,36 +64,36 @@ An API forces callers to be aware of rarely used features in order to use common
 
 <details>
 <summary>Example</summary>
+In Java, Streams and Readers are un-buffered by default while in 95% of all cases you want to buffer the stream. So you have to keep in mind to wrap int in a buffered reader in order to avoid performance issues:
 
 ```java
-public string getTranslation (String key, String languageISOCode){
-    if ( translator.containsKey(key) ) {
-        Translation translation = translator.get(key);
-        if ( translation.canTranslateTo(languageISOCode) ) {
-            return translation.getLanguageSpecificTranslation(languageISOCode);
-        }
-        return "Not found";
-    }
-    return "Not found";
-}
+    public String readFile(File input) throws FileNotFoundException, IOException {
+        try (var reader = new FileReader(input)) {
+            try (var bufferedReader = new BufferedReader(reader)) {
+                StringBuilder content = new StringBuilder();
+                String line;
 
-public string getBetterTranslation (String key, String languageISOCode){
-    if ( languageISOCode.isEmpty() ) {
-        languageISOCode = Thread.currentThread().getCurrentLanguage().getISOCode();
-    }
-    if ( translator.containsKey(key) ) {
-        Translation translation = translator.get(key);
-        if ( translation.canTranslateTo(languageISOCode) ) {
-            return translation.getLanguageSpecificTranslation(languageISOCode);
-        }
-        return "Not found";
-    }
-    return "Not found";
-}
+                while ((line = bufferedReader.readLine()) != null) {
+                    content.append(line);
+                    content.append(System.lineSeparator());
+                }
 
-public string getBetterTranslation (String key) {
-    return getBetterTranslation(key, Thread.currentThread().getCurrentLanguage().getISOCode());
-}   
+                return content.toString();
+            }
+        }
+    }
+```
+
+In .NET, all streams are buffered by default. Also it contains useful helper
+methods implementing standard use cases (like `OpenText()` for reading text
+files):
+
+```cs
+    public string ReadFile(FileInfo input)
+    {
+        using var reader = input.OpenText();
+        return reader.ReadToEnd();
+    }
 ```
 </details>
 
@@ -129,7 +129,7 @@ This red flag occures when a general-purpose mechanism also contains code specia
 
 ```java
 public static class NetworkErrorLogger {
-    
+
     public static void logRpcOpenError (RpcRequest req, Exception e) {
         logger.log(Level.WARNING, "Error opening a rpc connection. Message: " + e);
     }
@@ -142,7 +142,7 @@ public static class NetworkErrorLogger {
 </details>
 
 > You have to look at the code, to find out what is actually happening and if it's correct. <br>
-> 
+>
 
 
 ## Conjoined Method
