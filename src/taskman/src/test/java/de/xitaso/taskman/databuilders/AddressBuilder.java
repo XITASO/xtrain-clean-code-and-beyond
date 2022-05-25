@@ -11,9 +11,13 @@ public class AddressBuilder extends DataBuilder<Address, AddressBuilder> {
     @Override
     protected Address createInstance() {
         var address = new Address();
+        // set Street
         address.setStreet("Some Street");
+        // set Street Number
         address.setStreetNumber("5a");
+        // set Zip Code
         address.setZipCode("86167");
+        // set City
         address.setCity("Augsburg");
         return address;
     }

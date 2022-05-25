@@ -10,18 +10,18 @@ import de.xitaso.taskman.entities.Project;
 public class ProjectManagementService {
 
     @Autowired
-    private ProjectRepository repository;
+    private ProjectRepository r;
 
     public long createProject(Project project) {
-        return repository.save(project);
+        return r.save(project);
     }
 
     public Project findById(long id) {
-        return repository.findOne(id);
+        return r.findOne(id);
     }
 
     public Iterable<Project> findAll() {
-        return repository.findAll();
+        return r.findAll();
     }
 
     public void update(Project details) {
@@ -30,6 +30,6 @@ public class ProjectManagementService {
 //        if (actual == null) {
 //            throw new UnsupportedOperationException();
 //        }
-        repository.update(details);
+        r.update(details);
     }
 }
