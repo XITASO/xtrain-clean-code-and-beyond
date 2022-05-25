@@ -1,6 +1,6 @@
 # Naming Challenge
 
-Good names are crucial to create an understandable code base. Furthermore, bad names increase the likely hood of bugs [^1]. However, finding good names is a hard problem. In this challenge, you will suffer from bad names and learn how to increase readability by only finding better names.
+Good names are crucial to create an understandable code base. Furthermore, bad names increase the likelihood of bugs [^1]. However, finding good names is a hard problem. In this challenge, you will suffer from bad names and learn how to increase readability by only finding better names.
 
 ## Properties of Good Names :bulb:
 
@@ -17,16 +17,16 @@ Good names should [^1][^2][^3]:
 
 | Bad                                          | Better                           | Notes                                                      |
 | -------------------------------------------- | -------------------------------- | ---------------------------------------------------------- |
-| `int d // elapsed time`                      | `int elapsedTimeInDays`          | Reveales the intention and contains the unit               |
+| `int d // elapsed time`                      | `int elapsedTimeInDays`          | Reveals the intention and contains the unit               |
 | `fileObject`                                 | `file`                           | The term `Object` does not provide any value               |
-| `int int_amount`                             | `int amount`                     | Prefix just ads noise and is not relevant with modern IDEs |
+| `int int_amount`                             | `int amount`                     | Prefix just adds noise and is not relevant with modern IDEs |
 | `string greetMessageString = "Hello World";` | string greeting = "Hello World"; | string is redundant, message does not add any information  |
 
 ## Assignment :dart:
 
 In `src/SegmentationService.java` you will find a class which contains an algorithm to get a stream of a fraction of a CSV file. Unfortunately, the author of this class was not aware how to find good names for variables and class-members.
 
-Use the "Rename" refactoring of your IDE and find better names, for local variables, class members and method names. Watch how readability of the implementation grows while you improve the naming.
+Use the "Rename" refactoring of your IDE and find better names for local variables, class members and method names. Watch how readability of the implementation grows while you improve the naming.
 
 ### Hint :nerd_face:
 If you want to step through the code, execute the unit tests in `test/SegmentationServiceTest.java` in Debug mode.

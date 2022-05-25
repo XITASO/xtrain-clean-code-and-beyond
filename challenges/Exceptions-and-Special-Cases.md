@@ -16,7 +16,7 @@ Typical special cases are:
 ## Assignment :dart:
 
 An unexperienced developer implemented a first version of the requirement to
-assign a task to a project. There were the following acceptance criteria that had to be meat:
+assign a task to a project. There were the following acceptance criteria that had to be met:
 
 1. If I assign an existing task to a project, the project should contain this task.
 2. If I assign a non-existing task, an error should be returned.

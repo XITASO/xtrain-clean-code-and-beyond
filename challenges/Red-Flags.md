@@ -97,7 +97,7 @@ files):
 ```
 </details>
 
-> Implement good default for parameters! <br>
+> Implement good defaults for parameters! <br>
 > Classes or methods should do "the right thing" by default.
 
 ## Pass-Through Method
@@ -122,7 +122,7 @@ If the same piece of code (or code that is almost the same) appears over and ove
 > Extract code to methods or modules.
 
 ## Special-General Mixture
-This red flag occures when a general-purpose mechanism also contains code specialized for a particular use of that mechanism. This makes the mechanism more complicated and creates information leakage between the mechanism and the particular use case: future modifications to the use case are likely to require changes to the underlying mechanism as well.
+This red flag occurs when a general-purpose mechanism also contains code specialized for a particular use of that mechanism. This makes the mechanism more complicated and creates information leakage between the mechanism and the particular use case: future modifications to the use case are likely to require changes to the underlying mechanism as well.
 
 <details>
 <summary>Example</summary>
