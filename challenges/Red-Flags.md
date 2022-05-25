@@ -1,5 +1,7 @@
 # Red Flags
 
+from J. Ousterhoud, "A Philosophy of Software Design", 2nd e.d, Palo Alto, CA: Yaknyam Press, 2021
+
 ## Shallow Module
 The interface for a class or method isn't much simpler than its implementation.
 
@@ -38,7 +40,7 @@ public class CsvReader {
 
 public class CsvWriter {
     public void write(MyDataClass content) {
-        // write member m to column n 
+        // write member m to column n
     }
 }
 
@@ -62,36 +64,36 @@ An API forces callers to be aware of rarely used features in order to use common
 
 <details>
 <summary>Example</summary>
+In Java, Streams and Readers are un-buffered by default while in 95% of all cases you want to buffer the stream. So you have to keep in mind to wrap int in a buffered reader in order to avoid performance issues:
 
 ```java
-public string getTranslation (String key, String languageISOCode){
-    if ( translator.containsKey(key) ) {
-        Translation translation = translator.get(key);
-        if ( translation.canTranslateTo(languageISOCode) ) {
-            return translation.getLanguageSpecificTranslation(languageISOCode);
-        }
-        return "Not found";
-    }
-    return "Not found";
-}
+    public String readFile(File input) throws FileNotFoundException, IOException {
+        try (var reader = new FileReader(input)) {
+            try (var bufferedReader = new BufferedReader(reader)) {
+                StringBuilder content = new StringBuilder();
+                String line;
 
-public string getBetterTranslation (String key, String languageISOCode){
-    if ( languageISOCode.isEmpty() ) {
-        languageISOCode = Thread.currentThread().getCurrentLanguage().getISOCode();
-    }
-    if ( translator.containsKey(key) ) {
-        Translation translation = translator.get(key);
-        if ( translation.canTranslateTo(languageISOCode) ) {
-            return translation.getLanguageSpecificTranslation(languageISOCode);
-        }
-        return "Not found";
-    }
-    return "Not found";
-}
+                while ((line = bufferedReader.readLine()) != null) {
+                    content.append(line);
+                    content.append(System.lineSeparator());
+                }
 
-public string getBetterTranslation (String key) {
-    return getBetterTranslation(key, Thread.currentThread().getCurrentLanguage().getISOCode());
-}   
+                return content.toString();
+            }
+        }
+    }
+```
+
+In .NET, all streams are buffered by default. Also it contains useful helper
+methods implementing standard use cases (like `OpenText()` for reading text
+files):
+
+```cs
+    public string ReadFile(FileInfo input)
+    {
+        using var reader = input.OpenText();
+        return reader.ReadToEnd();
+    }
 ```
 </details>
 
@@ -124,10 +126,11 @@ This red flag occures when a general-purpose mechanism also contains code specia
 
 <details>
 <summary>Example</summary>
+Here, a special `NetWorkErrorLogger` has been introduced to log error messages on an RPC-connection. This special logger does not provide any value but complicates logging. It's also a good example for the red flag "Shallow Module".
 
 ```java
 public static class NetworkErrorLogger {
-    
+
     public static void logRpcOpenError (RpcRequest req, Exception e) {
         logger.log(Level.WARNING, "Error opening a rpc connection. Message: " + e);
     }
@@ -140,11 +143,11 @@ public static class NetworkErrorLogger {
 </details>
 
 > You have to look at the code, to find out what is actually happening and if it's correct. <br>
-> 
+>
 
 
 ## Conjoined Method
-It should be possible to understand each method independently. If you can't understand the implementation of one method without also understanding the implementation of another, that's a red flag. This red flag can occur in other contexts as well: if two pieces of code are physicallyy separated, but each can only be understood by looking at the other, that is a red flag.
+It should be possible to understand each method independently. If you can't understand the implementation of one method without also understanding the implementation of another, that's a red flag. This red flag can occur in other contexts as well: if two pieces of code are physically separated, but each can only be understood by looking at the other, that is a red flag.
 
 <details>
 <summary>Example</summary>
@@ -184,6 +187,10 @@ All of the information in a comment is immediately obvious from the code next to
  * Obtain a normalized resource name from REQ.
  */
 private static String[] getNormalizedResourceName(HTTPRequest req) {
+    // Return if Request was null
+    if (req == null) {
+        return
+    }
     // ...
 }
 ```
@@ -192,7 +199,22 @@ private static String[] getNormalizedResourceName(HTTPRequest req) {
 ## Implementation Documentation Contaminates Interface
 An interface comment describes implementation details not needed by users of the thing being documented.
 
-> Don't overload the user of the api with unnecessary information.
+<details>
+<summary>Example</summary>
+
+```cs
+    public interface TaskRepository
+    {
+        // Does a SELECT * FROM Tasks WHERE ID = {id} query
+        Task findById(Guid id);
+
+        // Deletes a task from the Azure SQL-DB
+        void Delete(Task toDelete);
+    }
+```
+</details>
+
+> Do not overload the user of the api with unnecessary information.
 
 
 ## Vague Name
