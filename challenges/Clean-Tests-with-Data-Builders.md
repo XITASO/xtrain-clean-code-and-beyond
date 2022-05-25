@@ -34,7 +34,7 @@ Our [taskman](../src/taskman/) sample app already creates an abstract
 [DataBuilder](../src/taskman/src/test/java/de/xitaso/taskman/databuilders/DataBuilder.java)
 class and an
 [AddressBuilder](../src/taskman/src/test/java/de/xitaso/taskman/databuilders/AddressBuilder.java)
-that helps to build valid address objects. Using such a builder, makes it much easier to cerate for example a valid address with city Hamburg:
+that helps to build valid address objects. Using such a builder makes it much easier to create for example a valid address with city Hamburg:
 
 ```java
 // Without builders, all setters must be set manually to avoid illegal null-valued properties:
